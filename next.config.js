@@ -4,7 +4,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: '',
+  basePath: process.env.NODE_ENV === 'production' ? '/my_porfile' : '',
   staticPageGenerationTimeout: 120,
   typescript: {
     // R3F JSX intrinsics not resolved by Next.js tsc plugin - runtime works fine
