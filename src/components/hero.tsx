@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import dynamic from 'next/dynamic'
+import { useTheme } from '@/components/theme-provider'
 
 const NeuralNetworkCanvas = dynamic(
   () => import('@/components/neural-canvas').then(m => m.NeuralNetworkCanvas),
@@ -97,9 +98,13 @@ function Counter({
 }
 
 export function Hero() {
+  const { theme } = useTheme()
   const { scrollY } = useScroll()
   const y = useTransform(scrollY, [0, 500], [0, 150])
   const opacity = useTransform(scrollY, [0, 300], [1, 0])
+
+  // Bottom color of gradient matches the theme background so hero blends into next section
+  const gradientBottom = theme === 'light' ? '#f1f5f9' : '#050810'
 
   const phrases = [
     'Building autonomous LLM systems',
@@ -118,10 +123,10 @@ export function Hero() {
         <NeuralNetworkCanvas />
       </div>
 
-      {/* Gradient overlay — always dark regardless of theme */}
+      {/* Gradient overlay — bottom color matches current theme */}
       <div
-        className="absolute inset-0 z-[1]"
-        style={{ background: 'linear-gradient(to bottom, rgba(5,8,16,0.3) 0%, rgba(5,8,16,0.55) 50%, #050810 100%)' }}
+        className="absolute inset-0 z-[1] transition-all duration-500"
+        style={{ background: `linear-gradient(to bottom, rgba(5,8,16,0.3) 0%, rgba(5,8,16,0.55) 50%, ${gradientBottom} 100%)` }}
       />
 
       <motion.div

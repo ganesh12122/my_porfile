@@ -25,6 +25,17 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    setMenuOpen(false)
+    const id = href.replace('#', '')
+    const el = document.getElementById(id)
+    if (!el) return
+    const navHeight = 64
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
+
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
@@ -49,6 +60,7 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
+              onClick={e => handleNav(e, link.href)}
               className="font-mono text-sm transition-colors duration-200 hover:text-primary"
               style={{ color: scrolled ? 'var(--text-secondary)' : '#64748b' }}
             >
@@ -110,7 +122,7 @@ export function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={e => handleNav(e, link.href)}
                   className="font-mono text-sm py-3 px-3 rounded-lg transition-colors hover:text-primary hover:bg-primary/5"
                   style={{ color: '#64748b' }}
                 >
@@ -119,7 +131,7 @@ export function Navbar() {
               ))}
               <a
                 href="#contact"
-                onClick={() => setMenuOpen(false)}
+                onClick={e => handleNav(e, '#contact')}
                 className="mt-2 mx-3 py-3 text-center rounded-lg font-mono text-sm border"
                 style={{ background: 'rgba(0,212,255,0.08)', borderColor: 'rgba(0,212,255,0.25)', color: '#00d4ff' }}
               >

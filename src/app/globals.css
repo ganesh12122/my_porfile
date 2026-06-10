@@ -57,6 +57,10 @@
 }
 
 * {
+  box-sizing: border-box;
+}
+
+html {
   scroll-behavior: smooth;
 }
 
@@ -240,6 +244,17 @@ code, pre, .font-mono {
   .section-padding {
     padding-top: 8rem;
     padding-bottom: 8rem;
+  }
+}
+
+/* Offset anchor scroll for fixed navbar */
+section[id] {
+  scroll-margin-top: 56px;
+}
+
+@media (min-width: 640px) {
+  section[id] {
+    scroll-margin-top: 64px;
   }
 }
 
