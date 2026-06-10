@@ -40,13 +40,24 @@ function Typewriter({ phrases, speed = 80 }: { phrases: string[]; speed?: number
   )
 }
 
-function Counter({ value, label, duration = 2000 }: { value: number; label: string; duration?: number }) {
+function Counter({ 
+  value, 
+  label, 
+  suffix = "+", 
+  duration = 2000 
+}: { 
+  value: number; 
+  label: string; 
+  suffix?: string; 
+  duration?: number;
+}) {
   const [count, setCount] = useState(0)
   const [hasAnimated, setHasAnimated] = useState(false)
   const safeId = `counter-${label.replace(/[^a-zA-Z0-9]/g, '-')}`
 
   useEffect(() => {
     if (hasAnimated) return
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting && !hasAnimated) {
@@ -55,21 +66,28 @@ function Counter({ value, label, duration = 2000 }: { value: number; label: stri
           const step = Math.ceil(value / (duration / 16))
           const timer = setInterval(() => {
             start += step
-            if (start >= value) { setCount(value); clearInterval(timer) }
-            else setCount(start)
+            if (start >= value) {
+              setCount(value)
+              clearInterval(timer)
+            } else {
+              setCount(start)
+            }
           }, 16)
         }
       })
     }, { threshold: 0.1 })
+
     const el = document.querySelector<HTMLElement>(`#${safeId}`)
     if (el) observer.observe(el)
+
     return () => observer.disconnect()
   }, [value, duration, hasAnimated, safeId])
 
   return (
     <div id={safeId} className="flex flex-col items-center">
       <span className="text-2xl sm:text-3xl font-bold font-mono" style={{ color: '#00d4ff' }}>
-        {value === 1200 ? '$' : ''}{count}{value === 1 ? 'yr' : '+'}
+        {value === 1200 ? '$' : ''}{count}
+        {suffix}
       </span>
       <span className="text-[10px] sm:text-xs mt-1 font-mono text-center leading-tight" style={{ color: '#64748b' }}>
         {label}
@@ -208,7 +226,7 @@ export function Hero() {
           <Counter value={5} label="End-to-End Systems" suffix="+" />
           <Counter value={3} label="Multi-tenant SaaS" suffix="+" />
           <Counter value={40} label="Docker Services" suffix="+" />
-          <Counter value={100} label="focus on security & multi-tenancy" suffix="%"/>
+          <Counter value={100} label="Security Focus" suffix="%" />
         </motion.div>
 
         {/* Scroll indicator */}

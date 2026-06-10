@@ -172,7 +172,7 @@ export function Contact() {
 
             {/* Resume CTA */}
             <a
-              href="/Ganesh_Prasath_Resume_2026_.pdf"
+              href="https://drive.google.com/file/d/1i610nAQ-sAI1XsAPxgmA6GTeND9UObnc/view?usp=sharing"
               download
               className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-background font-semibold rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,212,255,0.3)] hover:scale-[1.02]"
             >
