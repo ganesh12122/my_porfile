@@ -177,7 +177,7 @@ export function Hero() {
             View Projects
           </a>
           <a
-            href="/Ganesh_Prasath_Resume_2026_.pdf"
+            href="https://drive.google.com/file/d/1i610nAQ-sAI1XsAPxgmA6GTeND9UObnc/view?usp=sharing"
             download
             className="px-6 sm:px-8 py-3 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base"
             style={{ border: '1px solid rgba(0,212,255,0.35)', color: '#e2e8f0' }}
@@ -204,11 +204,11 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 1.1 }}
           className="grid grid-cols-3 sm:grid-cols-5 gap-4 sm:gap-6 max-w-2xl sm:max-w-4xl mx-auto mb-12 px-2"
         >
-          <Counter value={1} label="Yrs Prod AI" />
-          <Counter value={8} label="Systems Shipped" />
-          <Counter value={3000} label="Req / Day" />
-          <Counter value={1200} label="$ / yr Saved" />
-          <Counter value={11} label="Docker Svcs" />
+          <Counter value={1} label="Year Exp" suffix="+" />
+          <Counter value={5} label="End-to-End Systems" suffix="+" />
+          <Counter value={3} label="Multi-tenant SaaS" suffix="+" />
+          <Counter value={40} label="Docker Services" suffix="+" />
+          <Counter value={100} label="focus on security & multi-tenancy" suffix="%"/>
         </motion.div>
 
         {/* Scroll indicator */}

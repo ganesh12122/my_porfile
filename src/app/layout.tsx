@@ -42,11 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
-          src="http://localhost:3001/widget.js"
-          data-widget-id="w_xiI2iDqu3BVBckNu14-mFKruu2UZIpo5"
-          async
-        />
+       <script src="http://localhost:3001/widget.js" data-widget-id="w_xiI2iDqu3BVBckNu14-mFKruu2UZIpo5" async></script>
       </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-background text-text-primary`}

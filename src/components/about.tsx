@@ -1,13 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Award, Zap, Shield, Layers } from 'lucide-react'
+import { Award, Zap, Shield, Layers, Brain } from 'lucide-react'
 
 const highlights = [
-  { icon: Zap, label: 'Production-first', desc: 'Every system shipped to real users, not just demos' },
-  { icon: Shield, label: 'Security-native', desc: 'Encryption, tenant isolation, zero PII leakage built-in' },
-  { icon: Layers, label: 'Full ownership', desc: 'Architecture → deployment → observability, solo' },
-  { icon: Award, label: 'SPOT Award', desc: 'Awarded by CTO & MD, Ai4Solutions — Dec 2025' },
+  { icon: Zap, label: 'Production-first', desc: 'Real users, real scale — not just prototypes' },
+  { icon: Shield, label: 'Security-native', desc: 'Encryption, tenant isolation & replay protection by default' },
+  { icon: Layers, label: 'End-to-End Owner', desc: 'From architecture to production observability' },
+  { icon: Brain, label: 'Agentic AI Systems', desc: 'LangGraph + RAG pipelines for complex, reliable AI workflows' },
 ]
 
 const coreSkills = [
