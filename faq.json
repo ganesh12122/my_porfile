@@ -1,0 +1,74 @@
+[
+  {
+    "id": "who-are-you",
+    "question": "Who are you?",
+    "answer": "I'm Ganesh Prasath K R, an AI Engineer from Chennai, India, specializing in building production-grade AI systems, multi-tenant RAG platforms, and secure backend solutions.",
+    "keywords": ["who are you", "introduce yourself", "about you", "ganesh prasath"]
+  },
+  {
+    "id": "experience",
+    "question": "What is your experience?",
+    "answer": "I have 1+ year of production experience as a Software Engineer at Ai4Solutions. I have designed and delivered 5 major production systems including multi-tenant RAG chatbot SaaS, AI-native cloud storage, biometric verification platform, and AML compliance engines.",
+    "keywords": ["experience", "years", "background", "work history"]
+  },
+  {
+    "id": "current-role",
+    "question": "Where do you currently work?",
+    "answer": "I currently work as a Software Engineer (AI & Backend) at Ai4Solutions since May 2025.",
+    "keywords": ["current job", "where do you work", "ai4solutions"]
+  },
+  {
+    "id": "key-projects",
+    "question": "What are your main projects?",
+    "answer": "My major projects include: Custom Bot (Multi-Tenant AI Chatbot SaaS), Axenza Drive (Multi-Tenant Cloud Storage with AI-Native Sync), FaceAuth (Multi-Tenant Biometric Verification SaaS), and multiple AML Compliance Systems.",
+    "keywords": ["projects", "portfolio", "what have you built"]
+  },
+  {
+    "id": "axenza-drive",
+    "question": "Tell me about Axenza Drive",
+    "answer": "Axenza Drive is a commercial-grade self-hosted OneDrive alternative with automatic real-time AI knowledge sync. It features strong multi-tenancy, secure sharing, recursive folder sync, and dual-layer tenant isolation.",
+    "keywords": ["axenza drive", "cloud storage"]
+  },
+  {
+    "id": "custom-bot",
+    "question": "Tell me about Custom Bot",
+    "answer": "Custom Bot is a production-grade multi-tenant 'Build Your Own Chatbot' SaaS with a three-tier retrieval pipeline, secure API design, embeddable widgets, and full observability.",
+    "keywords": ["custom bot", "chatbot saas"]
+  },
+  {
+    "id": "faceauth",
+    "question": "Tell me about FaceAuth",
+    "answer": "FaceAuth is a multi-tenant biometric verification SaaS with hybrid liveness detection using MediaPipe and AdaFace ONNX model with fast vector matching.",
+    "keywords": ["faceauth", "biometric", "face recognition"]
+  },
+  {
+    "id": "tech-stack",
+    "question": "What is your tech stack?",
+    "answer": "Python, FastAPI, Docker, PostgreSQL + pgvector, Redis, LangGraph, n8n, Ollama, Qdrant, MinIO, Next.js, and various LLM APIs.",
+    "keywords": ["tech stack", "technologies", "skills"]
+  },
+  {
+    "id": "open-to-work",
+    "question": "Are you open to work?",
+    "answer": "Yes! I am open to new opportunities, freelance projects, and collaborations on innovative AI initiatives.",
+    "keywords": ["open to work", "hiring", "freelance", "collaboration"]
+  },
+  {
+    "id": "strengths",
+    "question": "What are your key strengths?",
+    "answer": "Building secure multi-tenant SaaS platforms, production RAG systems, cost-optimized LLM pipelines, strong security practices, and end-to-end ownership.",
+    "keywords": ["strengths", "expertise", "specialization"]
+  },
+  {
+    "id": "education",
+    "question": "What is your education background?",
+    "answer": "B.E. in Electronics and Communication Engineering from Vel Tech High Tech Dr. Rangarajan Dr. Sakunthala Engineering College (2024).",
+    "keywords": ["education", "degree"]
+  },
+  {
+    "id": "award",
+    "question": "Have you received any awards?",
+    "answer": "Yes, I received a Company Spot Award in December 2025 for technical vision and end-to-end ownership.",
+    "keywords": ["award", "recognition"]
+  }
+]

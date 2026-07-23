@@ -3,144 +3,156 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/components/theme-provider'
-import { Sun, Moon, Menu, X } from 'lucide-react'
-
-const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Blog', href: '#blog' },
-  { label: 'Contact', href: '#contact' },
-]
+import { Menu, X, Moon, Sun } from 'lucide-react'
 
 export function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault()
-    setMenuOpen(false)
-    const id = href.replace('#', '')
-    const el = document.getElementById(id)
-    if (!el) return
-    const navHeight = 64
-    const top = el.getBoundingClientRect().top + window.scrollY - navHeight
-    window.scrollTo({ top, behavior: 'smooth' })
-  }
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Experience', href: '#experience' },
+    { name: 'Blog', href: '#blog' },
+    { name: 'Contact', href: '#contact' },
+  ]
 
   return (
-    <motion.header
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-background/85 backdrop-blur-md border-b border-primary/10 shadow-[0_1px_20px_rgba(0,0,0,0.3)]'
-          : ''
+        isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-primary/10 py-3' : 'bg-transparent py-6'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="font-mono font-bold tracking-widest text-sm" style={{ color: scrolled ? 'var(--primary)' : '#00d4ff' }}>
-          GP<span style={{ color: scrolled ? 'var(--text-secondary)' : '#475569' }}>.dev</span>
-        </a>
+        <motion.a
+          href="#home"
+          className="text-2xl font-bold tracking-tighter"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }}
+        >
+          <span className="text-primary">G</span>anesh<span className="text-primary">.</span>dev
+        </motion.a>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-          {navLinks.map(link => (
-            <a
-              key={link.href}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link, index) => (
+            <motion.a
+              key={index}
               href={link.href}
-              onClick={e => handleNav(e, link.href)}
-              className="font-mono text-sm transition-colors duration-200 hover:text-primary"
-              style={{ color: scrolled ? 'var(--text-secondary)' : '#64748b' }}
+              className="text-sm font-medium text-text-secondary hover:text-primary transition-colors"
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.2 }}
             >
-              {link.label}
-            </a>
+              {link.name}
+            </motion.a>
           ))}
-        </nav>
 
-        {/* Right Controls */}
-        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg border transition-all duration-200"
-            style={{
-              borderColor: scrolled ? 'rgba(var(--primary-rgb, 0,212,255), 0.2)' : 'rgba(0,212,255,0.2)',
-              color: scrolled ? 'var(--text-secondary)' : '#64748b',
-            }}
+            className="p-2 rounded-lg bg-surface border border-primary/20 text-text-primary hover:text-primary transition-colors"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
 
-          <a
-            href="#contact"
-            className="hidden md:inline-flex px-3 lg:px-4 py-1.5 rounded-lg font-mono text-xs transition-all duration-200 border"
-            style={{
-              background: 'rgba(0,212,255,0.08)',
-              borderColor: 'rgba(0,212,255,0.25)',
-              color: '#00d4ff',
-            }}
-          >
-            Hire me
-          </a>
-
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 transition-colors"
-            onClick={() => setMenuOpen(!menuOpen)}
-            style={{ color: scrolled ? 'var(--text-secondary)' : '#64748b' }}
-            aria-label="Menu"
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="md:hidden p-2 text-text-primary"
           >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Mobile Menu Button (Desktop) */}
+        <div className="md:hidden flex items-center gap-4">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg bg-surface border border-primary/20 text-text-primary hover:text-primary transition-colors"
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-2 text-text-primary"
+          >
+            <Menu className="w-6 h-6" />
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden"
-            style={{ background: 'rgba(5,8,16,0.97)', borderBottom: '1px solid rgba(0,212,255,0.1)' }}
-          >
-            <nav className="flex flex-col px-4 py-4 gap-1">
-              {navLinks.map(link => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={e => handleNav(e, link.href)}
-                  className="font-mono text-sm py-3 px-3 rounded-lg transition-colors hover:text-primary hover:bg-primary/5"
-                  style={{ color: '#64748b' }}
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            />
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-full max-w-md bg-background border-l border-primary/20 z-50 p-6"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <span className="text-xl font-bold text-text-primary">Menu</span>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 text-text-secondary hover:text-text-primary transition-colors"
                 >
-                  {link.label}
-                </a>
-              ))}
-              <a
-                href="#contact"
-                onClick={e => handleNav(e, '#contact')}
-                className="mt-2 mx-3 py-3 text-center rounded-lg font-mono text-sm border"
-                style={{ background: 'rgba(0,212,255,0.08)', borderColor: 'rgba(0,212,255,0.25)', color: '#00d4ff' }}
-              >
-                Hire me
-              </a>
-            </nav>
-          </motion.div>
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {navLinks.map((link, index) => (
+                  <motion.a
+                    key={index}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-lg font-medium text-text-primary hover:text-primary transition-colors"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    {link.name}
+                  </motion.a>
+                ))}
+
+                <div className="pt-6 border-t border-primary/20">
+                  <button
+                    onClick={toggleTheme}
+                    className="flex items-center gap-3 p-3 bg-surface border border-primary/20 rounded-lg w-full justify-center"
+                  >
+                    {theme === 'dark' ? <Sun className="w-5 h-5 text-primary" /> : <Moon className="w-5 h-5 text-primary" />}
+                    <span className="text-text-primary">Switch to {theme === 'dark' ? 'Light' : 'Dark'} Mode</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
-    </motion.header>
+    </motion.nav>
   )
 }
