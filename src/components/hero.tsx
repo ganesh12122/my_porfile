@@ -43,10 +43,11 @@ function Typewriter({ phrases, speed = 70 }: { phrases: string[]; speed?: number
 }
 
 const proofItems = [
-  { value: '1+', label: 'yr shipping AI' },
-  { value: '4', label: 'production systems' },
-  { value: '3k+', label: 'req/day' },
-  { value: '$0', label: 'API cost' },
+  { value: '1+', label: 'Year Exp' },
+  { value: '5+', label: 'End-to-End Systems' },
+  { value: '3+', label: 'Multi-tenant SaaS' },
+  { value: '50+', label: 'Docker Services' },
+  { value: '100%', label: 'Security Focus' },
 ]
 
 const ease = [0.22, 1, 0.36, 1] as const
