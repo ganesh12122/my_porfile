@@ -1,20 +1,28 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Syne, Outfit, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
-import { CustomCursor } from '@/components/custom-cursor'
 import { NoiseOverlay } from '@/components/noise-overlay'
 
-const inter = Inter({
+const syne = Syne({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-syne',
   display: 'swap',
+  weight: ['500', '600', '700', '800'],
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const outfit = Outfit({
   subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
+  variable: '--font-outfit',
   display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
+})
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  variable: '--font-ibm-plex-mono',
+  display: 'swap',
+  weight: ['400', '500'],
 })
 
 export const metadata: Metadata = {
@@ -40,15 +48,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
-       <script src="https://sit-platform.axenza.ai/widget.js" data-widget-id="w_I2pNd61vD6WfCmf0hzSZeGxclnW4Jvbs" async></script>
+        <script
+          src="https://sit-platform.axenza.ai/widget.js"
+          data-widget-id="w_I2pNd61vD6WfCmf0hzSZeGxclnW4Jvbs"
+          async
+        />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-background text-text-primary`}
+        className={`${syne.variable} ${outfit.variable} ${ibmPlexMono.variable} font-sans bg-background text-text-primary antialiased`}
       >
         <ThemeProvider>
-          <CustomCursor />
           <NoiseOverlay />
           {children}
         </ThemeProvider>

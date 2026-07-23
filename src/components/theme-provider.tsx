@@ -17,7 +17,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Always default to dark, only restore if user explicitly toggled before
     const savedTheme = localStorage.getItem('theme') as Theme | null
-    if (savedTheme) setTheme(savedTheme)
+    if (savedTheme === 'light' || savedTheme === 'dark') setTheme(savedTheme)
     // do NOT follow system preference — dark is the designed default
   }, [])
 
@@ -29,6 +29,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
+    document.documentElement.style.colorScheme = theme
   }, [theme])
 
   return (

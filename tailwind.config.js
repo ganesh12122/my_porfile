@@ -8,7 +8,10 @@ module.exports = {
     extend: {
       colors: {
         background: 'var(--background)',
-        surface: 'var(--surface)',
+        surface: {
+          DEFAULT: 'var(--surface)',
+          elevated: 'var(--surface-elevated)',
+        },
         primary: {
           DEFAULT: 'var(--primary)',
           hover: 'var(--primary-hover)',
@@ -17,6 +20,12 @@ module.exports = {
           DEFAULT: 'var(--secondary)',
           hover: 'var(--secondary-hover)',
         },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          dim: 'var(--accent-dim)',
+          secondary: 'var(--accent-secondary)',
+          bright: 'var(--accent-bright)',
+        },
         text: {
           primary: 'var(--text-primary)',
           secondary: 'var(--text-secondary)',
@@ -24,23 +33,16 @@ module.exports = {
         border: 'var(--border)',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-syne)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-ibm-plex-mono)', 'ui-monospace', 'monospace'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in',
         'fade-in-up': 'fadeInUp 0.6s ease-out',
         'fade-in-down': 'fadeInDown 0.6s ease-out',
-        'slide-in-left': 'slideInLeft 0.6s ease-out',
-        'slide-in-right': 'slideInRight 0.6s ease-out',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'pulse-slower': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'bounce-slow': 'bounce 3s infinite',
-        'marquee': 'marquee 35s linear infinite',
-        'marquee-reverse': 'marquee 35s linear infinite reverse',
-        'shimmer': 'shimmer 2s infinite',
-        'blink': 'blink 1s step-end infinite',
-        'draw-line': 'drawLine 2s ease-out forwards',
+        blink: 'blink 1s step-end infinite',
       },
       keyframes: {
         fadeIn: {
@@ -55,33 +57,12 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateY(-20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        slideInLeft: {
-          '0%': { opacity: '0', transform: 'translateX(-50px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        slideInRight: {
-          '0%': { opacity: '0', transform: 'translateX(50px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        marquee: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
-        shimmer: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' },
-        },
         blink: {
           '50%': { opacity: '0' },
         },
-        drawLine: {
-          '0%': { strokeDashoffset: '1000' },
-          '100%': { strokeDashoffset: '0' },
-        },
       },
       backgroundImage: {
-        'gradient-cyan': 'var(--gradient-cyan)',
-        'gradient-purple': 'var(--gradient-purple)',
+        'gradient-accent': 'var(--gradient-accent)',
         'gradient-glow': 'var(--gradient-glow)',
       },
     },

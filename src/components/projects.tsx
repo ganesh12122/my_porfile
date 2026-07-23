@@ -3,22 +3,45 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { projects } from '@/data/projects'
-import { X, Lock, ExternalLink } from 'lucide-react'
+import { X, Lock, ArrowUpRight } from 'lucide-react'
 import type { Project } from '@/data/projects'
 
-const categoryColor: Record<string, string> = {
-  production: 'text-cyan-400 bg-cyan-400/10 border-cyan-400/20',
-  compliance: 'text-purple-400 bg-purple-400/10 border-purple-400/20',
-  biometric: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
-  personal: 'text-orange-400 bg-orange-400/10 border-orange-400/20',
+/** Pull a short outcome metric from project copy when available */
+function outcomeMetric(project: Project): string | null {
+  const src = `${project.longDescription} ${project.description}`
+  const patterns = [
+    /(\d[\d,]+\+?\s*req(?:uests)?\/day[^.·]*)/i,
+    /(\$0\s*API cost[^.·]*)/i,
+    /(~\s*\$[\d,]+\s*\/?\s*year saved)/i,
+    /(\d+-service microservices?)/i,
+    /(\d+\s*Docker services)/i,
+    /(SPOT Award)/i,
+    /(zero manual re-upload)/i,
+    /(MAS TRM-compliant)/i,
+  ]
+  for (const re of patterns) {
+    const m = src.match(re)
+    if (m) return m[1].trim()
+  }
+  return null
+}
+
+const categoryTint: Record<string, string> = {
+  production: 'border-l-accent',
+  compliance: 'border-l-accent-secondary',
+  biometric: 'border-l-accent/70',
+  personal: 'border-l-text-secondary',
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const live = status === 'production'
   return (
-    <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
-      status === 'production' ? 'text-green-400 bg-green-400/10 border-green-400/20' : 'text-text-secondary bg-text-secondary/10 border-text-secondary/20'
-    }`}>
-      {status === 'production' ? '● LIVE' : '◎ DONE'}
+    <span
+      className={`text-[10px] font-mono tracking-wide ${
+        live ? 'text-accent' : 'text-text-secondary'
+      }`}
+    >
+      {live ? '● LIVE' : '◎ DONE'}
     </span>
   )
 }
@@ -30,31 +53,34 @@ function Modal({ project, onClose }: { project: Project; onClose: () => void }) 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85"
         onClick={onClose}
       >
         <motion.div
-          initial={{ scale: 0.95, opacity: 0, y: 20 }}
+          initial={{ scale: 0.97, opacity: 0, y: 16 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.95, opacity: 0, y: 20 }}
+          exit={{ scale: 0.97, opacity: 0, y: 16 }}
           transition={{ duration: 0.25 }}
-          className="bg-surface border border-primary/20 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-[0_0_60px_rgba(0,212,255,0.1)]"
-          onClick={e => e.stopPropagation()}
+          className="bg-surface border border-border rounded-lg max-w-2xl w-full max-h-[85vh] overflow-y-auto"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className="p-5 sm:p-8">
-            {/* Header */}
+          <div className="p-6 sm:p-8">
             <div className="flex items-start justify-between mb-6">
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <span className="font-mono text-xs text-text-secondary">{project.number}</span>
                   <StatusBadge status={project.status} />
-                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${categoryColor[project.category]}`}>
-                    {project.category.toUpperCase()}
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-text-secondary">
+                    {project.category}
                   </span>
                 </div>
-                <h2 className="text-2xl font-bold text-text-primary">{project.title}</h2>
+                <h2 className="font-display text-2xl font-bold text-text-primary">{project.title}</h2>
               </div>
-              <button onClick={onClose} className="p-2 rounded-lg hover:bg-primary/10 text-text-secondary hover:text-primary transition-all">
+              <button
+                onClick={onClose}
+                className="p-2 rounded-md hover:bg-accent-dim text-text-secondary hover:text-accent transition-colors"
+                aria-label="Close"
+              >
                 <X size={18} />
               </button>
             </div>
@@ -62,22 +88,16 @@ function Modal({ project, onClose }: { project: Project; onClose: () => void }) 
             <p className="text-text-secondary leading-relaxed mb-8">{project.longDescription}</p>
 
             <div className="mb-6">
-              <p className="text-xs font-mono text-text-secondary mb-3 uppercase tracking-widest">Tech Stack</p>
+              <p className="text-[10px] font-mono text-text-secondary mb-3 uppercase tracking-[0.15em]">
+                Tech Stack
+              </p>
               <div className="flex flex-wrap gap-2">
-                {project.techStack.map((tech, i) => (
-                  <span key={i} className="px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-lg text-sm font-mono">
+                {project.techStack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 bg-accent-dim text-accent border border-border rounded text-xs font-mono"
+                  >
                     {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <p className="text-xs font-mono text-text-secondary mb-3 uppercase tracking-widest">Tags</p>
-              <div className="flex flex-wrap gap-2">
-                {project.tags.map((tag, i) => (
-                  <span key={i} className="px-3 py-1 bg-surface border border-text-secondary/20 text-text-secondary rounded-lg text-sm">
-                    {tag}
                   </span>
                 ))}
               </div>
@@ -86,10 +106,10 @@ function Modal({ project, onClose }: { project: Project; onClose: () => void }) 
             <a
               href="#contact"
               onClick={onClose}
-              className="flex items-center justify-center gap-2 w-full py-3 bg-primary hover:bg-primary/80 text-white rounded-xl font-medium transition-all duration-200 hover:shadow-[0_0_20px_rgba(0,212,255,0.3)]"
+              className="flex items-center justify-center gap-2 w-full py-3.5 bg-accent text-background rounded-md font-display font-semibold text-sm hover:bg-primary-hover transition-colors"
             >
-              <ExternalLink size={16} />
-              Inquire About This Project
+              Inquire about this project
+              <ArrowUpRight size={16} />
             </a>
           </div>
         </motion.div>
@@ -98,146 +118,129 @@ function Modal({ project, onClose }: { project: Project; onClose: () => void }) 
   )
 }
 
-function FeaturedCard({ project, index, onClick }: { project: Project; index: number; onClick: () => void }) {
+function CaseStrip({
+  project,
+  index,
+  onClick,
+}: {
+  project: Project
+  index: number
+  onClick: () => void
+}) {
+  const metric = outcomeMetric(project)
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      onClick={onClick}
-      className="group relative p-5 sm:p-8 bg-surface border border-primary/10 rounded-2xl cursor-pointer hover:border-primary/40 hover:shadow-[0_0_40px_rgba(0,212,255,0.08)] transition-all duration-300"
-    >
-      {/* Top row */}
-      <div className="flex items-start justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-xs text-text-secondary">{project.number}</span>
-          <StatusBadge status={project.status} />
-        </div>
-        <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${categoryColor[project.category]}`}>
-          {project.category.toUpperCase()}
-        </span>
-      </div>
-
-      <h3 className="text-xl font-bold text-text-primary mb-3 group-hover:text-primary transition-colors duration-200">
-        {project.title}
-      </h3>
-      <p className="text-sm text-text-secondary leading-relaxed mb-6 line-clamp-3">
-        {project.description}
-      </p>
-
-      <div className="flex flex-wrap gap-1.5 mb-6">
-        {project.techStack.slice(0, 5).map((tech, i) => (
-          <span key={i} className="text-[11px] px-2 py-0.5 bg-primary/8 text-primary/80 border border-primary/15 rounded font-mono">
-            {tech}
-          </span>
-        ))}
-        {project.techStack.length > 5 && (
-          <span className="text-[11px] px-2 py-0.5 bg-text-secondary/10 text-text-secondary rounded font-mono">
-            +{project.techStack.length - 5}
-          </span>
-        )}
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-xs text-text-secondary">
-          <Lock size={11} />
-          <span>Private repo</span>
-        </div>
-        <span className="text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200 font-mono">
-          View details →
-        </span>
-      </div>
-
-      {/* Glow on hover */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/[0.03] to-secondary/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-    </motion.div>
-  )
-}
-
-function MiniCard({ project, index, onClick }: { project: Project; index: number; onClick: () => void }) {
-  return (
-    <motion.div
+    <motion.button
+      type="button"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.07 }}
+      transition={{ duration: 0.45, delay: Math.min(index * 0.05, 0.3) }}
       onClick={onClick}
-      className="group p-5 bg-surface border border-primary/10 rounded-xl cursor-pointer hover:border-primary/30 hover:shadow-[0_0_20px_rgba(0,212,255,0.06)] transition-all duration-300"
+      className={`group w-full text-left border-y border-border border-l-2 ${categoryTint[project.category]} py-6 sm:py-7 px-4 sm:px-6 -mt-px hover:bg-accent-dim/50 transition-colors duration-200`}
     >
-      <div className="flex items-center justify-between mb-3">
-        <span className="font-mono text-xs text-text-secondary">{project.number}</span>
-        <StatusBadge status={project.status} />
+      <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-8">
+        <span className="font-mono text-xs text-text-secondary shrink-0 pt-1 w-8">
+          {project.number}
+        </span>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-text-primary group-hover:text-accent transition-colors">
+              {project.title}
+            </h3>
+            <StatusBadge status={project.status} />
+          </div>
+
+          {metric && (
+            <p className="font-mono text-xs sm:text-sm text-accent mb-2 tracking-wide">{metric}</p>
+          )}
+
+          <p className="text-sm text-text-secondary leading-relaxed mb-4 max-w-2xl">
+            {project.description}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <div className="flex flex-wrap gap-1.5">
+              {project.techStack.slice(0, 5).map((tech) => (
+                <span
+                  key={tech}
+                  className="text-[11px] px-2 py-0.5 font-mono text-text-secondary border border-border rounded"
+                >
+                  {tech}
+                </span>
+              ))}
+              {project.techStack.length > 5 && (
+                <span className="text-[11px] font-mono text-text-secondary">
+                  +{project.techStack.length - 5}
+                </span>
+              )}
+            </div>
+            <span className="flex items-center gap-1.5 text-[11px] text-text-secondary/70 font-mono ml-auto">
+              <Lock size={10} />
+              Private · Inquire
+            </span>
+          </div>
+        </div>
+
+        <span className="hidden sm:flex items-center text-accent opacity-0 group-hover:opacity-100 transition-opacity shrink-0 pt-1">
+          <ArrowUpRight size={20} />
+        </span>
       </div>
-      <h4 className="font-bold text-text-primary text-sm mb-2 group-hover:text-primary transition-colors">
-        {project.title}
-      </h4>
-      <p className="text-xs text-text-secondary line-clamp-2 mb-3 leading-relaxed">
-        {project.description}
-      </p>
-      <div className="flex flex-wrap gap-1">
-        {project.techStack.slice(0, 3).map((tech, i) => (
-          <span key={i} className="text-[10px] px-1.5 py-0.5 bg-primary/8 text-primary/70 rounded font-mono border border-primary/10">
-            {tech}
-          </span>
-        ))}
-      </div>
-    </motion.div>
+    </motion.button>
   )
 }
 
 export function Projects() {
   const [selected, setSelected] = useState<Project | null>(null)
-  const featured = projects.filter(p => p.featured)
-  const rest = projects.filter(p => !p.featured)
+  const featured = projects.filter((p) => p.featured)
+  const rest = projects.filter((p) => !p.featured)
 
   return (
     <section id="projects" className="section-padding relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
-        {/* Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-6"
+          className="font-mono text-xs tracking-[0.2em] uppercase text-text-secondary mb-8"
         >
-          <span className="inline-block px-4 py-2 bg-text-secondary/10 border border-text-secondary/20 rounded-full font-mono text-sm tracking-widest text-text-secondary">
-            03 · projects
+          03 — Work
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-10 sm:mb-12"
+        >
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary">
+            What I&apos;ve shipped
+          </h2>
+          <span className="text-text-secondary font-mono text-sm">
+            {projects.length} systems
           </span>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-10 sm:mb-12"
-        >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">What I've shipped</h2>
-          <span className="text-text-secondary font-mono text-sm">{projects.length} production systems</span>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
+        <div className="mb-4">
           {featured.map((p, i) => (
-            <FeaturedCard key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
+            <CaseStrip key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
           ))}
         </div>
 
-        {/* Divider */}
         <div className="flex items-center gap-4 my-10">
-          <div className="flex-1 h-px bg-primary/10" />
-          <span className="text-xs font-mono text-text-secondary tracking-widest">MORE PROJECTS</span>
-          <div className="flex-1 h-px bg-primary/10" />
+          <div className="flex-1 h-px bg-border" />
+          <span className="text-[10px] font-mono text-text-secondary tracking-[0.2em] uppercase">
+            More
+          </span>
+          <div className="flex-1 h-px bg-border" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div>
           {rest.map((p, i) => (
-            <MiniCard key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
+            <CaseStrip key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
           ))}
         </div>
-
       </div>
 
       {selected && <Modal project={selected} onClose={() => setSelected(null)} />}
