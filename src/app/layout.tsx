@@ -26,19 +26,33 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Ganesh Prasath K R | Agentic AI Developer',
-  description: 'Building production-grade AI systems - LLM orchestration, RAG pipelines, multi-tenant SaaS',
-  keywords: ['AI Engineer', 'Agentic AI', 'LLM', 'RAG', 'FastAPI', 'Python', 'Multi-tenant SaaS'],
+  title: 'Ganesh Prasath K R | Agentic AI & Backend Engineer',
+  description:
+    'Production AI engineer from Chennai — building agentic systems, RAG pipelines, multi-tenant SaaS, and biometric platforms end-to-end.',
+  keywords: [
+    'AI Engineer',
+    'Agentic AI',
+    'LLM',
+    'RAG',
+    'FastAPI',
+    'Python',
+    'Multi-tenant SaaS',
+    'LangGraph',
+    'Biometrics',
+    'Compliance',
+  ],
   authors: [{ name: 'Ganesh Prasath K R' }],
   openGraph: {
-    title: 'Ganesh Prasath K R | Agentic AI Developer',
-    description: 'Building production-grade AI systems',
+    title: 'Ganesh Prasath K R | Agentic AI & Backend Engineer',
+    description:
+      'Production AI engineer — agents, RAG, multi-tenant SaaS, and biometric systems shipped end-to-end.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ganesh Prasath K R | Agentic AI Developer',
-    description: 'Building production-grade AI systems',
+    title: 'Ganesh Prasath K R | Agentic AI & Backend Engineer',
+    description:
+      'Production AI engineer — agents, RAG, multi-tenant SaaS, and biometric systems shipped end-to-end.',
   },
 }
 

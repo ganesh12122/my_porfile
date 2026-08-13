@@ -11,13 +11,17 @@ function outcomeMetric(project: Project): string | null {
   const src = `${project.longDescription} ${project.description}`
   const patterns = [
     /(\d[\d,]+\+?\s*req(?:uests)?\/day[^.·]*)/i,
-    /(\$0\s*API cost[^.·]*)/i,
+    /(\$0\s*\/month\s*API cost[^.·]*)/i,
+    /(\$0[^.·]*API cost[^.·]*)/i,
     /(~\s*\$[\d,]+\s*\/?\s*year saved)/i,
     /(\d+-service microservices?)/i,
-    /(\d+\s*Docker services)/i,
+    /(\d+\+?\s*Docker (micro)?services)/i,
     /(SPOT Award)/i,
     /(zero manual re-upload)/i,
     /(MAS TRM-compliant)/i,
+    /(under 300ms)/i,
+    /(400\+\s*entities)/i,
+    /(Graph-RAG)/i,
   ]
   for (const re of patterns) {
     const m = src.match(re)
@@ -35,13 +39,14 @@ const categoryTint: Record<string, string> = {
 
 function StatusBadge({ status }: { status: string }) {
   const live = status === 'production'
+  const active = status === 'in-progress'
   return (
     <span
       className={`text-[10px] font-mono tracking-wide ${
-        live ? 'text-accent' : 'text-text-secondary'
+        live ? 'text-accent' : active ? 'text-accent-secondary' : 'text-text-secondary'
       }`}
     >
-      {live ? '● LIVE' : '◎ DONE'}
+      {live ? '● LIVE' : active ? '⟳ ACTIVE' : '◎ DONE'}
     </span>
   )
 }
@@ -193,6 +198,7 @@ function CaseStrip({
 
 export function Projects() {
   const [selected, setSelected] = useState<Project | null>(null)
+  const [showMore, setShowMore] = useState(false)
   const featured = projects.filter((p) => p.featured)
   const rest = projects.filter((p) => !p.featured)
 
@@ -228,19 +234,49 @@ export function Projects() {
           ))}
         </div>
 
-        <div className="flex items-center gap-4 my-10">
-          <div className="flex-1 h-px bg-border" />
-          <span className="text-[10px] font-mono text-text-secondary tracking-[0.2em] uppercase">
-            More
+        {/* Toggle button */}
+        <button
+          type="button"
+          onClick={() => setShowMore((v) => !v)}
+          className="flex items-center gap-4 w-full my-10 group focus:outline-none"
+          aria-expanded={showMore}
+        >
+          <div className="flex-1 h-px bg-border group-hover:bg-accent/30 transition-colors duration-200" />
+          <span className="flex items-center gap-2 text-[10px] font-mono text-text-secondary group-hover:text-accent tracking-[0.2em] uppercase transition-colors duration-200">
+            {showMore ? 'Hide' : 'More'}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`w-3 h-3 transition-transform duration-300 ${showMore ? 'rotate-180' : ''}`}
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
           </span>
-          <div className="flex-1 h-px bg-border" />
-        </div>
+          <div className="flex-1 h-px bg-border group-hover:bg-accent/30 transition-colors duration-200" />
+        </button>
 
-        <div>
-          {rest.map((p, i) => (
-            <CaseStrip key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
-          ))}
-        </div>
+        {/* Collapsible secondary projects */}
+        <AnimatePresence initial={false}>
+          {showMore && (
+            <motion.div
+              key="more-projects"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{ overflow: 'hidden' }}
+            >
+              {rest.map((p, i) => (
+                <CaseStrip key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {selected && <Modal project={selected} onClose={() => setSelected(null)} />}

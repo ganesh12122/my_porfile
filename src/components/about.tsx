@@ -42,12 +42,16 @@ export function About() {
             <div className="space-y-5 text-base text-text-secondary leading-relaxed max-w-xl">
               <p>
                 Chennai-based AI Engineer. Crossed over from ECE into production AI — that background
-                gives me a systems-first mindset. I design for reliability, not just demos.
+                gives me a systems-first, hardware-aware mindset. I design for reliability, not
+                just demos.
               </p>
               <p>
-                1+ year at Ai4Solutions: four production systems built end-to-end — Multi-tenant AI
-                Chatbot SaaS, cloud storage with real-time RAG sync, AML compliance platforms for
-                Singapore fintech, and a biometric SaaS. Every system from scratch, full ownership.
+                1+ year at Ai4Solutions building four production systems from zero: the{' '}
+                <span className="text-text-primary font-medium">Axenza AI Platform</span>{' '}
+                (Context-Aware Bots, Graph-RAG, LiteLLM model gateway), cloud storage with
+                real-time RAG sync, MAS TRM-compliant AML platforms for Singapore fintech, and a
+                biometric KYC SaaS. Every system owned end-to-end — architecture, deployment, CI/CD,
+                and production observability.
               </p>
             </div>
           </motion.div>

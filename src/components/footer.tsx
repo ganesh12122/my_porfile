@@ -24,6 +24,7 @@ export function Footer() {
               { name: 'About', href: '#about' },
               { name: 'Work', href: '#projects' },
               { name: 'Experience', href: '#experience' },
+              { name: 'Writing', href: '#blog' },
               { name: 'Contact', href: '#contact' },
             ].map((link) => (
               <a

@@ -12,16 +12,17 @@ function DockerComposeCard() {
     { text: '    role: LLM · RAG · SaaS · Biometrics', type: 'value' },
     { text: '    location: Chennai, India', type: 'value' },
     { text: '    open_to_work: "true"', type: 'string' },
+    { text: '    flagship_project: Axenza AI Platform', type: 'value' },
     { text: '    stack:', type: 'key' },
     { text: '      - Python / FastAPI', type: 'item' },
     { text: '      - LangGraph / n8n', type: 'item' },
-    { text: '      - RAG / pgvector', type: 'item' },
+    { text: '      - Graph-RAG / LiteLLM', type: 'item' },
     { text: '      - Docker / Traefik', type: 'item' },
     { text: '    looking_for:', type: 'key' },
     { text: '      - Agentic AI roles', type: 'item' },
     { text: '      - LLM platform eng', type: 'item' },
     { text: '      - Remote friendly', type: 'item' },
-    { text: '    award: SPOT Award — Ai4Solutions', type: 'string' },
+    { text: '    award: SPOT Award — Ai4Solutions 2025', type: 'string' },
   ]
 
   // Terminal shell stays dark in both themes — always use bright syntax colors

@@ -1,72 +1,98 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { blogPosts } from '@/data/blog'
+
+const upcomingTopics = [
+  {
+    title: 'How I built a three-tier RAG pipeline that doesn\'t leak context across tenants',
+    category: 'RAG Architecture',
+    readTime: '~15 min',
+  },
+  {
+    title: 'LangGraph vs n8n: what I learned shipping both in the same production system',
+    category: 'Agentic AI',
+    readTime: '~12 min',
+  },
+  {
+    title: 'False positives in AML screening: building a deterministic decision engine',
+    category: 'Compliance Engineering',
+    readTime: '~10 min',
+  },
+]
 
 export function Blog() {
   return (
-    <section id="blog" className="section-padding relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Section Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+    <section id="blog" className="section-padding relative bg-surface/40">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-12"
+          transition={{ duration: 0.45 }}
+          className="font-mono text-xs tracking-[0.2em] uppercase text-text-secondary mb-8"
         >
-          <span className="inline-block px-4 py-2 bg-text-secondary/10 border border-text-secondary/20 rounded-full font-mono text-sm tracking-widest text-text-secondary mb-4">
-            05 · writing
-          </span>
+          05 — Writing
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-10 sm:mb-12"
+        >
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary">
+            Thinking out loud
+          </h2>
+          <span className="text-text-secondary font-mono text-sm">First posts dropping soon</span>
         </motion.div>
-        
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 sm:mb-16">
-          Thinking out loud
-        </h2>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-          {blogPosts.map((post, index) => (
+
+        <div className="border-t border-border">
+          {upcomingTopics.map((topic, i) => (
             <motion.div
-              key={post.id}
-              initial={{ opacity: 0, y: 20 }}
+              key={topic.title}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="p-6 bg-surface border border-primary/20 rounded-lg hover:border-primary transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,212,255,0.1)]"
+              transition={{ duration: 0.4, delay: i * 0.07 }}
+              className="border-b border-border py-6 sm:py-7 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
             >
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-text-secondary text-xs">Draft</span>
-                <span className="text-text-secondary text-xs">•</span>
-                <span className="text-text-secondary text-xs">{post.category}</span>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-accent/70">
+                    {topic.category}
+                  </span>
+                  <span className="font-mono text-[10px] text-text-secondary/50">·</span>
+                  <span className="font-mono text-[10px] text-text-secondary/60">{topic.readTime}</span>
+                </div>
+                <p className="font-display text-lg sm:text-xl font-semibold text-text-primary group-hover:text-accent transition-colors duration-200 leading-snug max-w-2xl">
+                  {topic.title}
+                </p>
               </div>
-              
-              <h3 className="text-xl font-bold text-text-primary mb-2">
-                {post.title}
-              </h3>
-              
-              <p className="text-text-secondary mb-4 line-clamp-2">
-                {post.excerpt}
-              </p>
-              
-              <div className="flex items-center justify-between text-xs text-text-secondary">
-                <span>{post.date}</span>
-                <span>{post.readTime}</span>
-              </div>
+              <span className="font-mono text-[11px] text-text-secondary border border-border rounded px-2.5 py-1 shrink-0 self-start sm:self-center">
+                Coming Soon
+              </span>
             </motion.div>
           ))}
         </div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 text-center"
+          transition={{ delay: 0.3 }}
+          className="mt-8 font-mono text-xs text-text-secondary/60"
         >
-          <p className="text-text-secondary">
-            First articles dropping soon. Follow on LinkedIn for updates.
-          </p>
-        </motion.div>
+          Follow on{' '}
+          <a
+            href="https://linkedin.com/in/ganesh-prasath-k-r-301523309"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:underline"
+          >
+            LinkedIn
+          </a>{' '}
+          for updates when articles drop.
+        </motion.p>
       </div>
     </section>
   )

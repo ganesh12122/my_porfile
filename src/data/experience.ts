@@ -22,7 +22,6 @@ export const experiences: Experience[] = [
     bullets: [
       'Designed and delivered multi-agent AI pipelines using LangGraph and n8n, implementing tool use, retrieval augmentation, and agent reasoning across production workloads',
       'Built and owned a three-tier RAG retrieval pipeline — reducing unnecessary LLM calls and preventing privacy leaks across tenants',
-      'Engineered dual-pool Gemini model rotation with thread-safe quota tracking: 3,000+ requests/day at $0 API cost, saving ~$1,200/year',
       'Maintained full CI/CD pipelines and production observability via Prometheus metrics and Grafana dashboards with alerting',
       'Integrated Azure OCR for ID document processing, ONNX-based face embedding models, and on-premise Ollama model inference',
     ],
