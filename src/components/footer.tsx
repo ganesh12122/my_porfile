@@ -70,9 +70,6 @@ export function Footer() {
           <p className="text-text-secondary text-xs font-mono">
             © {year} Ganesh Prasath K R
           </p>
-          <p className="text-text-secondary/60 text-xs font-mono">
-            // voltage atelier
-          </p>
         </div>
       </div>
     </footer>
