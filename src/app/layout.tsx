@@ -3,6 +3,7 @@ import { Syne, Outfit, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { NoiseOverlay } from '@/components/noise-overlay'
+import { WidgetAnimator } from '@/components/widget-animator'
 
 const syne = Syne({
   subsets: ['latin'],
@@ -75,6 +76,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <NoiseOverlay />
+          <WidgetAnimator />
           {children}
         </ThemeProvider>
       </body>
