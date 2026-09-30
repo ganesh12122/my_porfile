@@ -1,51 +1,80 @@
-# Complete Project Summary and Developer Journey: Axenza AI Platform
+# Axenza AI Platform
 
-## 1. Complete Project Summary
-
-The **Axenza AI Platform** is an enterprise-grade, multi-tenant SaaS application designed to empower organizations with Context-Aware AI Bots, Graph-RAG (Retrieval-Augmented Generation), and robust Document Drive integration. It aims to provide a commercial-grade, scalable, and highly configurable AI ecosystem for B2B clients.
-
-### Core Architecture & Capabilities
-
-- **Unified Frontend & Multi-Tenant Architecture:** A central platform where organizations (tenants) can manage their users, billing plans (Free Trial, Professional, Custom), and AI models.
-- **RAG & Knowledge Base (Axenza Drive):** At the heart of the platform is "Axenza Drive," a specialized document management system. It supports uploading, soft-delete, trash retention, and audience-scoped retrieval. Documents uploaded here are automatically embedded, indexed, and made queryable by context-aware bots.
-- **Context-Aware Bots & Widget Gateway:** The platform offers bots that are not just simple chat interfaces but are "Context-Aware." They know *who* is asking (role, country, plan) and *where* they are in the application (using `setContext` from external SDKs), allowing for highly personalized, workflow-specific responses.
-- **Advanced Model Routing (LiteLLM Gateway):** Instead of exposing raw models to users, the platform abstracts AI capabilities into `Fast`, `Smart`, and `Powerful` profiles. The LiteLLM gateway acts as a multi-model router, handling fallbacks, retries, and API key management securely.
-- **Scalable Ingestion & Rate Limiting:** A multi-worker ingestion system handles document processing fairly across tenants. The system employs a two-layer rate-limiting strategy (Traefik + Redis) to protect infrastructure and enforce tenant plan limits.
-- **Infrastructure & Deployment (Dockhand):** Deployed across a robust microservices architecture (Frontend, Chat API, Agent Runtime, Embedding Service, LLM Service, and Drive services like Identity, Tenant, File, Search, Notification) using a Docker/Traefik stack on SIT and Production environments.
+**Role:** Platform engineer — multi-tenant SaaS for embeddable AI assistants  
+**Stack:** Python (FastAPI), React, PostgreSQL + pgvector, Redis, Docker, Traefik, LiteLLM  
+**Status:** SIT. Standard and context-aware bots are in product use. Agent mode is a working pilot on a live tenant app.
 
 ---
 
-## 2. My Dedication, Work, and Journey (Diary)
+## One paragraph
 
-Building the Axenza AI Platform has been an iterative, highly focused journey. I have moved from a basic MVP to a sophisticated, commercial-ready platform. Here is the diary of my journey.
+Axenza AI Platform is a multi-tenant product that lets a company upload its own knowledge, configure a bot, and embed it in a website or SaaS app with one script. The same platform serves simple FAQ bots, in-app copilots that know which screen and which user they are talking to, and agents that read the signed-in user’s live APIs and can navigate the host app after the user confirms. I built this from a single sales-bot request into a commercial SaaS: tenants, plans, knowledge ingestion, a widget, model routing, and a separate agent service that does not disturb the existing chat path.
 
-### 📅 **Era 1: The MVP & Foundation**
-- **The Work:** I started by laying down the unified UI, establishing the core bots, and standing up the basic knowledge base (Drive). I implemented widgets, set up my SIT (System Integration Testing) deployment pipelines, and built the foundational rate-limiting mechanisms.
-- **The Result:** A working, end-to-end system proving the concept of my multi-tenant RAG platform.
+---
 
-### 📅 **Era 2: Phase 1 – The Admin Control Center**
-- **The Work:** I realized that a SaaS platform is only as good as its administrative controls. I built the multi-model catalog, tied models to billing plans, and implemented usage events. I created a "Super Admin" panel allowing platform owners to impersonate tenants, audit logs, and manage plans.
-- **The Result:** The platform gained commercial viability, allowing me to manage and bill tenants effectively.
+## What a tenant gets
 
-### 📅 **Era 3: Phase 2 – Context-Aware Intelligence**
-- **The Work:** This was a massive leap in AI capability. I moved beyond simple chatbots to "Context-Aware Bots." I implemented screen tagging, the `setContext` SDK feature, and created a reference demo app (DevOpsPro) to prove the integration. I also added usage logging and admin metrics.
-- **The Result:** My bots could now act as true workflow copilots, understanding the exact context of the user's current task.
+1. **Sign up** a workspace.
+2. **Create a bot** in one of three modes.
+3. **Add knowledge** — PDFs, FAQs, URLs, or folders from Axenza Drive.
+4. **Test** in Playground, then **publish a widget** for allowed origins.
+5. **Embed** the script in their site or product.
 
-### 📅 **Era 4: Hygiene Sprints & Technical Debt (Waves 1-2)**
-- **The Work:** I paused new feature development to solidify the base. I added complex Drive features (soft delete, restore, move, trash retention), fixed public share links (Vite to Traefik routing), and established robust DB migration runbooks. I also fully automated the DevOpsPro demo seeding.
-- **The Result:** A dramatically more stable, secure, and user-friendly Drive experience.
+| Mode | What it does |
+|------|----------------|
+| **Standard** | FAQ match, semantic cache, then vector search and an LLM answer. Built for support and sales. |
+| **Context-aware** | The host calls `setContext` with the page and the user (role, country, plan). Retrieval stays on that screen. FAQ and cache are evidence; the model writes the reply. Shipped with Lynkis. |
+| **Agent** | Same widget, different service. It calls the tenant’s APIs for the signed-in user, then answers from that JSON. Navigation is a confirm chip the host app applies. Pilot on Lynkis SIT. |
 
-### 📅 **Era 5: Phase A & A.B – The Commercial Engine**
-- **The Work:** I built the business engine. Phase A introduced the plan upgrade UX (request → approve workflow), admin-configurable limits, bot caps, and WebSocket notifications. I quickly followed up with Phase A.B, adding Drive gating, trial clocks, storage alerts, and the highly requested "Custom Plan" package.
-- **The Result:** A complete commercial loop. Users can sign up for a trial, hit their limits, request an upgrade, and be seamlessly transitioned by an admin to a Professional or Custom tier.
+Guide bots and agent bots stay separate. An agent never goes through the guide chat path, so a bad tool call cannot change how documentation bots answer.
 
-### 📅 **Era 6: Advanced Model Routing & Ingestion Scale (July/August 2026)**
-- **The Work:** I abstracted AI models away from the user into `Fast`, `Smart`, and `Powerful` profiles using LiteLLM. I built a robust gateway to handle Azure/OpenAI/Local fallbacks. Concurrently, I scaled my ingestion system to use multiple Dockhand workers, ensuring fair tenant claim and providing ETA/Progress % on knowledge ingestion.
-- **The Result:** Massive improvements in resilience, cost-management, and ingestion speed.
+---
 
-### 📅 **Current Focus & The Road Ahead (The Production Gate)**
-- **Context Personalization (W0/W1/W2):** I am currently shipping Audience-Scoped Retrieval. The bot now filters knowledge based on the user's role, country, and plan. I am building the Knowledge Relationship Graph (W2a) and preparing for Hybrid Retrieval (Vector × Graph).
-- **The Production Gate (Tier 1 & Tier 2):** Before I scale to thousands of users, I am ruthlessly focused on Token Efficiency (caching, context packing, reranking) and RAG Scale (HNSW indexes, incremental re-embedding).
-- **The Future (Agent Mode):** Once the commercial and production gates are cleared, the final frontier is Phase 3a: Agent Mode, where bots will autonomously use tools to execute multi-step workflows.
+## How the agent works (the part I would walk through)
 
-*This journey reflects my relentless dedication to building not just a cool AI tool, but a robust, commercially viable, and highly personalized SaaS platform. My focus has always been on bridging the gap between raw LLM power and practical, context-aware business utility.*
+The widget is a script on the host page, not an iframe.
+
+- **JWT apps** pass a bearer token with `setAuth`. The DevOpsPro demo uses this.
+- **Cookie apps** never hand the session to Axenza. The browser already holds an HttpOnly cookie. The agent asks the page to call its own API (`host_fetch`). Only the JSON comes back.
+- **Tools are per screen.** A dashboard question can only use APIs bound to that page. The profile score comes from the company-status API, not the dashboard admin list.
+- **“Take me to …”** does not navigate by itself. The host sends a list of real paths. The user clicks **Open Company profile?** or **Open Admins?** and the app opens that route.
+- **One pass per message.** A fast classifier picks tools, the call runs, the model writes a short reply. A LangGraph loop exists and is off. Knowledge is evidence. Live JSON wins when a tool actually ran.
+
+On the Lynkis pilot this is proven: “what’s my profile score?” returns the live number and the next step (Upload Documents). “Take me to company profile” and “take me to admins” open the right pages after a click.
+
+---
+
+## Architecture
+
+```text
+Host app (setContext, and for agents: host_fetch + navigate)
+        → Widget  →  Widget gateway
+                ├─ Guide / context-aware  →  agent runtime  →  FAQ, cache, vector, optional graph
+                └─ Agent                  →  agent mode service  →  screen tools, then LLM
+Knowledge: upload / Drive  →  ingestion workers  →  embeddings (pgvector)
+Models: Fast / Smart / Powerful profiles  →  LiteLLM (fallback across providers)
+Edge: Docker services behind Traefik, Redis limits, SIT deploy by image tag
+```
+
+Services include the chat API, widget gateway, agent runtime, agent mode, embeddings, LLM, ingestion, and Drive (identity, tenant, file, search, share, notification).
+
+---
+
+## What I took it through
+
+| Stage | What shipped |
+|-------|----------------|
+| Foundation | Multi-tenant UI, bots, Drive knowledge, embeddable widget, SIT deploy, rate limits |
+| Admin | Model catalog tied to plans, usage events, super-admin (impersonation, audit, plans) |
+| Context-aware | `setContext`, screen-scoped retrieval, DevOpsPro reference app |
+| Drive hygiene | Soft delete, restore, trash retention, share-link routing, migration runbooks |
+| Commercial | Trial limits, upgrade request and approve, custom plans, storage alerts |
+| Models and scale | Fast / Smart / Powerful via LiteLLM; multi-worker ingestion with fair tenant claims and progress |
+| Personalization | Audience filters (role, country, plan), knowledge graph, hybrid vector × graph retrieval |
+| Agent | Separate service, cookie and JWT auth, screen tools, confirm-to-navigate, Lynkis SIT pilot |
+
+---
+
+## What I would say in an interview
+
+The hard part was not “call an LLM.” It was making one platform safe for many products: isolate guide chat from tool-using agents, never copy an HttpOnly session onto our servers, and only let a bot call the APIs that belong on the page the user is looking at. The Lynkis pilot is the proof. The score answer is the company’s real completion number. The navigation chips are the app’s real routes, and nothing moves until the user clicks.
